@@ -9,7 +9,6 @@
 #include <kputils.h>
 #include <linux/printk.h>
 #include <linux/string.h>
-#include <linux/math64.h>
 
 #include "qbc_utils.h"
 #include "battchg.h"
@@ -66,8 +65,9 @@ static int calculate_smooth_capacity(int voltage_now_uv)
                 return voltage_capacity_map[i].capacity_pct;
             }
             
+            // 使用标准整数运算替代div_s64
             return voltage_capacity_map[i].capacity_pct + 
-                   div_s64((s64)capacity_range * position, voltage_range);
+                   (capacity_range * position) / voltage_range;
         }
     }
     
